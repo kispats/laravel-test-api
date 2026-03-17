@@ -1,8 +1,8 @@
-name: Build Laravel Test API
+name: Build and Push Laravel Image
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -16,15 +16,15 @@ jobs:
       IMAGE_NAME: ghcr.io/${{ github.repository }}
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4   # ✅ FIXED (no Node 20 warning)
 
-    - name: Login to GHCR
-      run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Build image
-      run: docker build -t $IMAGE_NAME:latest .
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME:latest .
 
-    - name: Push image
-      run: docker push $IMAGE_NAME:latest
-      
-      
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME:latest
+        
