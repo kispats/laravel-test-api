@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MoneyController;
+
 
 Route::get('/test', function (Request $request) {
 
@@ -14,4 +16,8 @@ Route::get('/test', function (Request $request) {
         'result' => $prefix . ' - ' . $param1 . ' ' . $param2
     ]);
 });
+
+Route::get('/number-to-words', [MoneyController::class, 'convert']);
+
+// GET /api/number-to-words?amount=1234.56
 
